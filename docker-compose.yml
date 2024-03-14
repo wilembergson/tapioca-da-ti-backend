@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  db:
+    container_name: db
+    image: postgres
+    environment:
+      POSTGRES_USER: berg
+      POSTGRES_PASSWORD: minhasenha
+      POSTGRES_DB: devmotel
+    volumes:
+      - ./data:/data/db
+    ports:
+      - 5432:5432
