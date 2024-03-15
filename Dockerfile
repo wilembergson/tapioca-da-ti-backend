@@ -5,13 +5,13 @@ FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
 
 # Copia o arquivo pom.xml para o diretório de trabalho
-COPY pom.xml .
+COPY . .
 
 # Baixa as dependências do Maven
 RUN mvn dependency:go-offline
 
 # Copia o resto do código-fonte para o diretório de trabalho
-COPY src ./src
+#COPY src ./src
 
 # Compila o projeto Spring Boot
 RUN mvn package -DskipTests
@@ -23,7 +23,7 @@ FROM openjdk:17-slim
 WORKDIR /app
 
 # Copia o arquivo JAR gerado para o diretório de trabalho
-COPY --from=build /app/target/app.jar .
+COPY --from=build /app/target/*.jar app.jar
 
 # Comando para iniciar o aplicativo Spring Boot
 CMD ["java", "-jar", "app.jar"]
