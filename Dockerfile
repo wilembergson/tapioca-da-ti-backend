@@ -1,16 +1,29 @@
-FROM ubuntu:latest AS build
+# Use a imagem base que tenha o Maven e o Java instalados
+FROM maven:3.8.4-openjdk-17-slim AS build
 
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
-COPY . .
+# Define o diretório de trabalho dentro do contêiner
+WORKDIR /app
 
-RUN apt-get install maven -y
-RUN mvn clean install
+# Copia o arquivo pom.xml para o diretório de trabalho
+COPY pom.xml .
 
-FROM openjdk:17-jdk-slim
+# Baixa as dependências do Maven
+RUN mvn dependency:go-offline
 
-EXPOSE 8080
+# Copia o resto do código-fonte para o diretório de trabalho
+COPY src ./src
 
-#COPY --from=build /target/deploy_render-1.0.0.jar app.jar
+# Compila o projeto Spring Boot
+RUN mvn package -DskipTests
 
-RUN mvn spring-boot:run
+# Define a imagem base para a execução do projeto Spring Boot
+FROM openjdk:17-slim
+
+# Define o diretório de trabalho dentro do contêiner
+WORKDIR /app
+
+# Copia o arquivo JAR gerado para o diretório de trabalho
+COPY --from=build /app/target/app.jar .
+
+# Comando para iniciar o aplicativo Spring Boot
+CMD ["java", "-jar", "app.jar"]
