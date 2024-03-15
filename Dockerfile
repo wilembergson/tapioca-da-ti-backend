@@ -13,4 +13,4 @@ EXPOSE 8080
 
 #COPY --from=build /target/deploy_render-1.0.0.jar app.jar
 
-CMD [ "mvn", "spring-boot:run" ]
+RUN mvn spring-boot:run
