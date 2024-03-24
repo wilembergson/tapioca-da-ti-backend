@@ -1,29 +1,22 @@
-# Use a imagem base que tenha o Maven e o Java instalados
-FROM maven:3.8.4-openjdk-17-slim AS build
+FROM tomcat:10-jdk17-openjdk-slim
 
-# Define o diretório de trabalho dentro do contêiner
-WORKDIR /app
+RUN apt-get update &&  apt-get install -y maven
 
-# Copia o arquivo pom.xml para o diretório de trabalho
+WORKDIR /usr/local/tomcat/webapps
+
 COPY . .
-
-# Baixa as dependências do Maven
-RUN mvn dependency:go-offline
-
-# Copia o resto do código-fonte para o diretório de trabalho
+#COPY pom.xml .
 #COPY src ./src
-
-# Compila o projeto Spring Boot
 RUN mvn package -DskipTests
 
-# Define a imagem base para a execução do projeto Spring Boot
-FROM openjdk:17-slim
+# Verifica se o arquivo WAR foi gerado corretamente
+RUN ls -l /usr/local/tomcat/webapps/target/*.war
 
-# Define o diretório de trabalho dentro do contêiner
-WORKDIR /app
+# Copia o arquivo WAR gerado para o diretório do Tomcat
+RUN cp /usr/local/tomcat/webapps/target/*.war tapiocadati.war
 
-# Copia o arquivo JAR gerado para o diretório de trabalho
-COPY --from=build /app/target/*.jar app.jar
+#COPY target/*.war /usr/local/tomcat/webapps/tapiocadati.war
 
-# Comando para iniciar o aplicativo Spring Boot
-CMD ["java", "-jar", "app.jar"]
+EXPOSE 8080
+
+CMD ["catalina.sh", "run"]

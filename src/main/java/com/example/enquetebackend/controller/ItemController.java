@@ -2,17 +2,13 @@ package com.example.enquetebackend.controller;
 
 import com.example.enquetebackend.dto.AtualizarItemDTO;
 import com.example.enquetebackend.dto.NovoItemDTO;
-import com.example.enquetebackend.dto.VotoDTO;
 import com.example.enquetebackend.entity.Item;
-import com.example.enquetebackend.entity.Voto;
 import com.example.enquetebackend.service.ItemService;
-import com.example.enquetebackend.service.VotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

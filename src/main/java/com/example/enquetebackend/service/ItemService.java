@@ -2,17 +2,14 @@ package com.example.enquetebackend.service;
 
 import com.example.enquetebackend.dto.AtualizarItemDTO;
 import com.example.enquetebackend.dto.NovoItemDTO;
-import com.example.enquetebackend.dto.VotoDTO;
 import com.example.enquetebackend.entity.*;
 import com.example.enquetebackend.exceptions.ErroPadrao;
 import com.example.enquetebackend.repository.*;
 import com.example.enquetebackend.util.PedidoStatus;
-import com.example.enquetebackend.util.RespostasEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
